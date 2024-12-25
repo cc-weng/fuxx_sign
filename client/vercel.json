@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "framework": "vite",
+  "outputDirectory": "dist",
+  "public": true,
+  "buildCommand": "npm run build:only"
+}
