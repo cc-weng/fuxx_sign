@@ -1,14 +1,12 @@
-# Fuck Sign (c) WX
+# Fuck Sign (c) ccweng
 
 import requests
 import json
 import time
 import datetime
 import pytz
-from deta import Deta
 
 def fuxx(code: str, name: str, choose: int = 1):
-    deta = Deta("b0fTLMm4z8ei_DfN7GbohkBBREhR183jp9ykG5BjDGMbK")
     headers = {
         'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36",
         'Referer': 'https://servicewechat.com/wx694dda7a5f554038/2/page-frame.html'
@@ -26,12 +24,12 @@ def fuxx(code: str, name: str, choose: int = 1):
         'name': name, # 姓名
         'week': week,
         'type': '正常签到',
-        's_type': '课程'
+        's_type': ''
     }
 
-    getCourse = {
-        'r': 'user/GetCourse',
-        'code': code 
+    wxInit = {
+        'r': 'user/WxInit',
+        'code': code
     }
     
 
@@ -39,7 +37,7 @@ def fuxx(code: str, name: str, choose: int = 1):
     url = urlList[choose]
     # response = requests.get(url, params=loginForm, headers=headers)
     # cookies = response.cookies
-    response = requests.get(url, params=getCourse, headers=headers)
+    response = requests.get(url, params=wxInit, headers=headers)
     signList = []
     try:
         signList = json.loads(response.text).get('data', dict()).get('signData', list())
@@ -50,6 +48,7 @@ def fuxx(code: str, name: str, choose: int = 1):
             'msg': '解析签到列表错误',
             'data': None
         }
+    print(f'[{time.ctime()}] {name}: 签到列表 {signList}')
     if len(signList) == 0:
         print(f'[{time.ctime()}] {name}: 没有待签到课程')
         return { 
@@ -59,7 +58,12 @@ def fuxx(code: str, name: str, choose: int = 1):
         }
     signTarget = signList[0]
     signForm['sr_id'] = signTarget['sr_id']
-    signForm['week'] = signTarget['week']
+    signForm['week'] = signTarget.get('week', week)
+    if ('a_start' in signTarget):
+        signForm['s_type'] = '活动'
+    else:
+        signForm['s_type'] = '课程'
+        
     print(f'[{time.ctime()}] {name}: 签到表单 {signForm}')
     response = requests.get(url, params=signForm, headers=headers)
     resObj = dict()
@@ -73,12 +77,12 @@ def fuxx(code: str, name: str, choose: int = 1):
             'data': None
         }
     if resObj.get('code', 0) == "200":
-        print(f'[{time.ctime()}] {name}: 签到成功[{signTarget.get("name", "")}]')
+        print(f'[{time.ctime()}] {name}: 签到成功[{signTarget.get("name", "")}]')   
         return {
             'code': 200,
             'msg': 'success',
             'data': f'{signTarget.get("name", "")}签到成功'
-        }   
+        }
     print(f'[{time.ctime()}] {name}: 签到失败[{signTarget.get("name", "")}]\n{resObj}')
     return {
         'code': 500,
