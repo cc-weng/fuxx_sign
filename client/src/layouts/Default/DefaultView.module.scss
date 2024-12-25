@@ -1,0 +1,19 @@
+.root {
+    @extend .col, .flex-center;
+    @include padding();
+    @include fill();
+    overflow: hidden;
+    
+    img {
+        margin-top: 2rem;
+        width: 20rem;
+        height: auto;
+        object-fit: cover;
+        object-position: center;
+
+        @media screen and (max-width: $sm) {
+            width: 100%;
+            margin-top: 1rem;
+        }
+    }
+}

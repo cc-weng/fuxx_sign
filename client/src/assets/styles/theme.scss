@@ -1,0 +1,29 @@
+$themes: (
+    light: (
+        bgColor: #ebf4ff,
+        bgColor-2: #fff,
+        textColor: #444,
+        primary: #2389f5,
+    ),
+    dark: (
+        bgColor: #333,
+        bgColor-2: #222,
+        textColor: #fff,
+        primary: #72b6ff,
+    )
+);
+$curTheme: "light";
+
+@mixin useTheme() {
+    @each $key, $value in $themes {
+        $curTheme: $key !global;
+        html[data-theme='#{$key}'] & {
+            @content;
+        }
+    }
+}
+
+@function getVar($property) {
+    $themeMap: map-get($themes, $curTheme);
+    @return map-get($themeMap, $property);
+}

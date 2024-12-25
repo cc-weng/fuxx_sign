@@ -1,0 +1,99 @@
+$primary: #2389f5;
+
+.root {
+  @extend .col;
+  height: 100%;
+  overflow: hidden;
+  overflow-y: auto;
+  justify-content: center;
+  align-items: center;
+  @include useTheme {
+    background: getVar('bgColor');
+  }
+  transition: all 0.25s;
+}
+
+.wrapper {
+  @extend .row;
+  width: 70%;
+  height: fit-content;
+  box-sizing: border-box;
+  padding: 2rem;
+  border-radius: 1rem;
+  @include useTheme {
+    background: getVar('bgColor-2');
+  }
+  overflow: hidden;
+  transition: all 0.25s;
+
+  .banner {
+    flex-shrink: 0;
+    width: 47.5%;
+    height: auto;
+    object-fit: contain;
+  }
+  .form {
+    @extend .col;
+    flex: 1 0;
+    box-sizing: border-box;
+    margin: 1rem 0;
+    position: relative;
+    @include useTheme {
+      color: getVar('textColor')
+    }
+
+    .title {
+      @include useTheme {
+        color: getVar('primary');
+      }
+      font-weight: bold;
+      font-size: larger;
+      margin: 0 2rem 0rem 2rem;
+    }
+    .content {
+      @extend .col;
+      align-items: center;
+      box-sizing: border-box;
+      padding: 0 2rem;
+      gap: 1rem;
+
+      .action {
+        @extend .row;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .policyBar {
+        @extend .row;
+        @include padding(0 0 0 .2rem);
+        width: 100%;
+        box-sizing: border-box;
+
+        .policy {
+          color: $grey;
+          font-size: smaller;
+          .highlight {
+            @include useTheme {
+              color: getVar('primary');
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: $sm) {
+    width: 90%;
+    flex-direction: column;
+    padding: 1rem;
+    .banner {
+      width: 100%;
+    }
+    .form {
+      .title {
+        text-align: center;
+        margin: 1rem;
+      }
+    }
+  }
+}
