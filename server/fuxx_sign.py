@@ -33,7 +33,7 @@ def fuxx(code: str, name: str, choose: int = 1):
     }
     
 
-    urlList = ['http://gdyjydrd.com/sign-in-management-system-back/index.php',  'https://shenhailao.com/sign-in-management-system-back/index.php']
+    urlList = ['http://gdyjydrd.com/sign-in-management-system-back/index.php',  'https://www.ufokc.com/sign-in-management-system-back/index.php']
     url = urlList[choose]
     # response = requests.get(url, params=loginForm, headers=headers)
     # cookies = response.cookies
